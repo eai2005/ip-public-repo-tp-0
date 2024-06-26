@@ -2,36 +2,39 @@
 
 from nasa_image_gallery.layers.generic.nasa_card import NASACard
 
+
 # usado cuando la info. viene de la API de la nasa, para transformarlo en una NASACard.
 def fromRequestIntoNASACard(object):
-    nasa_card = NASACard(
-                        title=object['data'][0]['title'],
-                        description=object['data'][0]['description'], 
-                        image_url=object['links'][0]['href'], 
-                        date=object['data'][0]['date_created'][:10]
-                )
-
-    return nasa_card
+    try:
+        nasa_card = NASACard(
+            title=object["data"][0]["title"],
+            description=object["data"][0]["description"],
+            image_url=object["links"][0]["href"],
+            date=object["data"][0]["date_created"][:10],
+        )
+        return nasa_card
+    except Exception as e:
+        return
 
 
 # usado cuando la info. viene del template, para transformarlo en una NASACard antes de guardarlo en la base de datos.
-def fromTemplateIntoNASACard(templ): 
+def fromTemplateIntoNASACard(templ):
     nasa_card = NASACard(
-                        title=templ.POST.get("title"),
-                        description=templ.POST.get("description"),
-                        image_url=templ.POST.get("image_url"),
-                        date=templ.POST.get("date")
-                )
+        title=templ.POST.get("title"),
+        description=templ.POST.get("description"),
+        image_url=templ.POST.get("image_url"),
+        date=templ.POST.get("date"),
+    )
     return nasa_card
 
 
 # cuando la info. viene de la base de datos, para transformarlo en una NASACard antes de mostrarlo.
 def fromRepositoryIntoNASACard(repo_dict):
     nasa_card = NASACard(
-                        id=repo_dict['id'],
-                        title=repo_dict['title'],
-                        description=repo_dict['description'],
-                        image_url=repo_dict['image_url'],
-                        date=repo_dict['date'],
-                )
+        id=repo_dict["id"],
+        title=repo_dict["title"],
+        description=repo_dict["description"],
+        image_url=repo_dict["image_url"],
+        date=repo_dict["date"],
+    )
     return nasa_card

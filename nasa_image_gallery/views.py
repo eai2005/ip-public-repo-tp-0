@@ -6,15 +6,18 @@ from .layers.services import services_nasa_image_gallery
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")
+
 
 # auxiliar: retorna 2 listados -> uno de las imágenes de la API y otro de los favoritos del usuario.
 def getAllImagesAndFavouriteList(request):
-  images = services_nasa_image_gallery.getAllImages()
+    images = services_nasa_image_gallery.getAllImages()
 
-  return images
+    return images
+
 
 # función principal de la galería.
 def home(request):
@@ -24,29 +27,34 @@ def home(request):
     favourite_list = []
     images = getAllImagesAndFavouriteList(request)
 
-    return render(request, 'home.html', {'images': images, 'favourite_list': favourite_list})
+    return render(
+        request, "home.html", {"images": images, "favourite_list": favourite_list}
+    )
+
 
 # función utilizada en el buscador.
 def search(request):
-     search_msg = request.POST.get('query', None)
-     if search_msg is not None and search_msg != '': 
+    search_msg = request.POST.get("query", None)
+    if search_msg is not None and search_msg != "":
 
         # Si se pone una palabra en el buscador, se van a visualizar las imágenes que coincidan con esa palabra.
         images = services_nasa_image_gallery.getAllImages(input=search_msg)
 
-     else:  
-        # En cambio si no se proporciono ninguna palabra en el buscador, va a mostrar las imagnes con relacionadas a la palabra predeterminada (space).  
+    else:
+        # En cambio si no se proporciono ninguna palabra en el buscador, va a mostrar las imagnes con relacionadas a la palabra predeterminada (space).
         images = services_nasa_image_gallery.getAllImages()
 
-     favourite_list= []
-     return render(request, 'home.html', {'images': images, 'favourite_list': favourite_list})
+    favourite_list = []
+    return render(
+        request, "home.html", {"images": images, "favourite_list": favourite_list}
+    )
 
 
 # las siguientes funciones se utilizan para implementar la sección de favoritos: traer los favoritos de un usuario, guardarlos, eliminarlos y desloguearse de la app.
 @login_required
 def getAllFavouritesByUser(request):
     favourite_list = []
-    return render(request, 'favourites.html', {'favourite_list': favourite_list})
+    return render(request, "favourites.html", {"favourite_list": favourite_list})
 
 
 @login_required
