@@ -37,11 +37,12 @@ def search(request):
     search_msg = request.POST.get("query", None)
     if search_msg is not None and search_msg != "":
 
-        # Si se pone una palabra en el buscador, se van a visualizar las imágenes que coincidan con esa palabra.
+        # si se coloca una palabra en el buscador, se buscaran las imagenes en las que coincidan.
         images = services_nasa_image_gallery.getAllImages(input=search_msg)
 
     else:
-        # En cambio si no se proporciono ninguna palabra en el buscador, va a mostrar las imagnes con relacionadas a la palabra predeterminada (space).
+        
+        #caso contrario va a mostrar el buscador con el termino default (space)
         images = services_nasa_image_gallery.getAllImages()
 
     favourite_list = []
@@ -50,11 +51,13 @@ def search(request):
     )
 
 
+
 # las siguientes funciones se utilizan para implementar la sección de favoritos: traer los favoritos de un usuario, guardarlos, eliminarlos y desloguearse de la app.
 @login_required
 def getAllFavouritesByUser(request):
     favourite_list = []
     return render(request, "favourites.html", {"favourite_list": favourite_list})
+
 
 
 @login_required
@@ -68,5 +71,5 @@ def deleteFavourite(request):
 
 
 @login_required
-def exit(request):
+def exit(request): #Al momento de querer salir del login utilizaremos esta funcion.
     pass
